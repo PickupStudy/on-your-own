@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: pkb-processor
+Version: 0.1.0
+Summary: Personal knowledge base processor
+Requires-Python: >=3.11
+Requires-Dist: httpx>=0.28.0
+Requires-Dist: pymysql>=1.1.0

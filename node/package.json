@@ -1,0 +1,11 @@
+{
+  "name": "pkb-node-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "doctor": "node ./src/main.js doctor",
+    "pipeline": "node ./src/main.js pipeline"
+  }
+}
