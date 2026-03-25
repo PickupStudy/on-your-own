@@ -37,6 +37,33 @@ function ensureGitRepo(cwd) {
   ensureGitIdentity(cwd);
 }
 
+function hasCommits(cwd) {
+  try {
+    execSync("git rev-parse --verify HEAD", { cwd, stdio: "pipe" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function ensureFirstCommit(cwd) {
+  if (hasCommits(cwd)) return;
+  runGit(
+    'commit --allow-empty -m "chore(pkb): initial commit (empty repo)"',
+    cwd,
+    true
+  );
+}
+
+function ensureBranchName(cwd, branch) {
+  const target = branch.trim() || "main";
+  try {
+    runGit(`branch -M ${target}`, cwd, true);
+  } catch {
+    // ignore if already correct or detached
+  }
+}
+
 function ensureOriginRemote(cwd, repo) {
   let current = "";
   try {
@@ -79,6 +106,9 @@ export async function syncToGitHub() {
   } catch {
     // 无变更或提交失败时仍尝试 push
   }
+
+  ensureFirstCommit(cwd);
+  ensureBranchName(cwd, branch);
 
   runGit(`push -u origin ${branch}`, cwd, true);
   return { status: "ok", message: "pushed to remote" };
